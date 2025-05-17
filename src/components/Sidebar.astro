@@ -8,18 +8,29 @@
         </button>
     </div>
     <div id="notes-list" class="notes-list">
-        <div class="note-item">item1</div>  
-        <div class="note-item">item2</div>
     </div>
 </aside>
 
 <script>
+    import {ulid} from "ulid"
     import {createIcons, Trash, FilePlus} from "lucide"
+    import { removeNote } from "../functions/notes"
+
     createIcons({
         icons: {
             Trash,
             FilePlus
         }
+    })
+
+    document.getElementById('new-note')?.addEventListener('click', () => {
+        const noteId = ulid()
+        window.location.hash = noteId
+        window.location.reload()
+    })
+
+    document.getElementById("remove-note")?.addEventListener('click', () => {
+        removeNote()
     })
 </script>
 
@@ -56,6 +67,10 @@
         opacity: 1;
     }
 
+    :global(html.light)button{
+        color:black
+    }
+
     .remove-note-btn:hover{
         color: red;
     }
@@ -70,7 +85,7 @@
         overflow-y: auto;
     }
 
-    .note-item{
+    :global(.note-item){
         padding: 0.75rem 1rem;
         border-bottom: 1px solid var(--border-color);
         cursor: pointer;
@@ -81,8 +96,17 @@
         opacity: 0.7;
     }
 
-    .note-item:hover,.note-item:active{
+    :global( .note-item.active),
+    :global( .note-item:hover){
         opacity: 1;
         background-color: color-mix(in srgb, rgb(255 255 255 / 0.3), var(--color-bg));
     }
+
+    :global(.note-item.active){
+        font-weight: 500;   
+    }
+
+    :global(html.light) .sidebar {
+        background-color: color-mix(in srgb, var(--color-primary) 10%, var(--color-text));
+        }
 </style>
